@@ -1,0 +1,112 @@
+<script>
+function check_email(val){
+    if(!val.match(/\S+@\S+\.\S+/)){ // Jaymon's / Squirtle's solution
+        // Do something
+        return false;
+    }
+    if( val.indexOf(' ')!=-1 || val.indexOf('..')!=-1){
+        // Do something
+        return false;
+    }
+    return true;
+}
+
+function add_sub(parent) {
+	
+	var text=$("#txtComment"+parent).val();
+	var module=$("#module"+parent).val();
+	var name_cm=$("#name_cm"+parent).val();
+	var email_cm=$("#email_cm"+parent).val();
+	var url_cm=$("#url_cm"+parent).val();
+	var check_cm=$("#check_cm"+parent).val();
+	var type_parent=$("#type_parent"+parent).val();
+	
+
+	$.ajax({
+	 url:"sub_comment.php.htm",
+	 type:"POST",
+	 data:"body="+text+"&module_cm="+module+"&do=add_sub"+"&name_cm="+name_cm+"&email_cm="+email_cm+"&url_cm="+url_cm+"&check_cm="+check_cm+"&type_parent="+type_parent+"&parent="+parent,
+	 success:function(html){
+			$("#content_tab_4").html(html);
+		}
+
+	});
+
+		
+}
+
+
+
+function del(id,type_parent) {
+	var del=confirm("Bạn chắc xóa không ?");
+ 	if (del==true){
+	$.ajax({
+		 url:"comment.php.htm",
+		 type:"POST",
+		 data:"id="+id+"&do=del_comment"+"&type_parent="+type_parent,
+		 success:function(html){
+				$("#content_tab_4").html(html);
+			}
+
+		});
+	}
+}
+
+$(document).ready(function(e) {
+	
+	$("#send_comment").click(function() {
+		var text=$("#txtComment").val();
+		var module=$("#module").val();
+		var name_cm=$("#name_cm").val();
+		var email_cm=$("#email_cm").val();
+		var url_cm=$("#url_cm").val();
+		var check_cm=$("#check_cm").val();
+		var type_parent=$("#type_parent").val();
+		
+
+			$.ajax({
+			 url:"comment.php.htm",
+			 type:"POST",
+			 data:"body="+text+"&module_cm="+module+"&do=add_comment"+"&name_cm="+name_cm+"&email_cm="+email_cm+"&url_cm="+url_cm+"&check_cm="+check_cm+"&type_parent="+type_parent,
+			 success:function(html){
+					$("#content_tab_4").html(html);
+				}
+	
+			});
+			$("#txtComment").val('');
+
+	})
+        
+});
+</script>
+ <div id="box_comment">
+        <div class="title_show">
+            <div class="ykien_vne" style=""><strong>Ý kiến bạn đọc</strong> (<label id="total_comment">0 </label>)</div>
+        </div> <!--end title_show-->
+        
+
+<div class="block_input_comment width_common">
+    <div class="input_comment">
+        <form id="comment_post_form">
+                <input type="text" name="name_cm" id="name_cm" class="css_input" placeholder="Nhập tên của bạn" />
+        <input type="email" name="email_cm" id="email_cm" class="css_input" placeholder="Nhập Email của bạn" />
+                    <textarea id="txtComment" name="txtComment" value="Ý kiến của bạn" onfocus="if (this.value == this.defaultValue) this.value = ''" onblur="if (this.value == '') this.value = this.defaultValue">Ý kiến của bạn</textarea>
+            <div class="width_common block_relative">
+                <div class="right block_btn_send">
+                    <input type="button" value="Gửi" class="btn_send_comment" id="send_comment">
+                    <input type="hidden" name="module" id="module" value=""  />
+                    <input type="hidden" name="url_cm" id="url_cm" value=""  />
+                    <input type="hidden" name="check_cm" id="check_cm" value=""  />
+                    <input type="hidden" name="type_parent" id="type_parent" value="0"  />
+                </div>
+ 
+
+            </div>
+
+        </form>
+
+    </div>
+</div> <!--end div block_input_comment-->
+        
+        
+        </div><!-- endf box_comment-->
